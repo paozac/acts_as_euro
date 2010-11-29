@@ -1,0 +1,34 @@
+acts_as_euro is a minimal module I've written to handle currencies stored in a db as integers. Given a parameter such as _price_ it will create a couple accessor methods to work with the whole and cents part of the price.
+To use it just put it in `lib/` and then require the file in your `application.rb`. In your model add something like this:
+
+	class CardItemPrice < ActiveRecord::Base
+	  include ActsAsEuro
+	  acts_as_euro :price
+	end
+
+The module will create these methods:
+
+* `price_whole`
+* `price_whole=`
+* `price_cents`
+* `price_cents=`
+
+That will extract the cents and whole parts from the main price attribute. They will be added to the `attr_accessible` list.
+A simple test:
+
+	describe Product do
+	  it { should validate_presence_of :price }
+
+	  it "should deal correctly with cents and whole euros" do
+	    p = Product.new
+	    p.price = 123
+	    p.price_whole.should == 1
+	    p.price_cents.should == "23"
+
+	    p.price_whole = 2
+	    p.price_cents = 99
+	    p.price.should == 299
+	  end
+	end
+
+I'm sure it can be improved, it was written in 5 minutes.
