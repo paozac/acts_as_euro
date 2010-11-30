@@ -1,6 +1,6 @@
 module ActsAsEuro
   def self.included(base)
-    base.send :extend, ClassMethods
+    base.extend ClassMethods
   end
   
   module ClassMethods
@@ -23,7 +23,8 @@ module ActsAsEuro
       end
       
       define_method whole_method_writer do |v|
-        self.price = price_cents.to_i + (v.to_i * 100) rescue nil
+        n = price_cents.to_i + (v.to_i * 100) rescue nil
+        self.price = n if n
       end
       
       define_method cents_method_reader do
@@ -31,7 +32,8 @@ module ActsAsEuro
       end
       
       define_method cents_method_writer do |v|
-        self.price = price_whole * 100 + v.to_i rescue nil
+        n = price_whole * 100 + v.to_i rescue nil
+        self.price = n if n
       end
       
       attr_accessible a.to_sym, whole_method_reader.to_sym, cents_method_reader.to_sym
