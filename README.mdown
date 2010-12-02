@@ -13,7 +13,8 @@ The module will create these methods:
 * `price_cents`
 * `price_cents=`
 
-That will extract the cents and whole parts from the main price attribute. They will be added to the `attr_accessible` list.
+That will extract the cents and whole parts from the main price attribute. **They will be added to the `attr_accessible` list.**
+
 A simple test:
 
 	describe Product do
